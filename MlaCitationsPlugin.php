@@ -169,13 +169,20 @@ class MlaCitationsPlugin extends Omeka_Plugin_AbstractPlugin
             return $name;
         }
 
-        // Do nothing if hte name already has a comma.
+        // Do nothing if the name already has a comma.
         if (strpos($name, ',') !== false) {
             return $name;
         }
 
-        // Divide the names into parts, and return the last part first.
+        // Divide the names into parts.
         $parts = preg_split('/\s+/', $name);
+
+        // If there is only one part, return it.
+        if (sizeof($parts) < 2) {
+            return $name;
+        }
+
+        // Return the last part followed my the rest.
         return array_pop($parts) . ', ' . implode(' ', $parts);
     }
 
@@ -196,8 +203,15 @@ class MlaCitationsPlugin extends Omeka_Plugin_AbstractPlugin
             return $name;
         }
 
-        // Divide the last part from the rest, and then put the rest first.
+        // Divide the last part from the rest.
         $parts = preg_split('/,\s*/', $name, 2);
+
+        // If there is only one part, return it.
+        if (sizeof($parts) < 2) {
+            return $name;
+        }
+
+        // Return the rest first.
         return $parts[1] . ' ' . $parts[0];
     }
 
